@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Do Your Cards",
+  "version": "5.1",
+  "description": "Blocks distracting sites until you finish your Anki flashcards",
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  }
+}

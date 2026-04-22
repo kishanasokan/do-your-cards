@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:320px;background:#0a0a0a;color:#f0ece4;font-family:Consolas,'Courier New',monospace;font-size:11px}
+
+.hdr{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid #1a1a1a}
+.hdr-icon{width:28px;height:28px;flex-shrink:0}
+.hdr h1{font-size:13px;font-weight:700;flex:1}
+
+.tgl{position:relative;width:36px;height:20px;cursor:pointer;display:inline-block;vertical-align:middle}
+.tgl input{opacity:0;width:0;height:0;position:absolute}
+.tgl-s{position:absolute;inset:0;background:#2a2a2a;border-radius:10px;transition:background .2s}
+.tgl-s::before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:#666;border-radius:50%;transition:transform .2s,background .2s}
+.tgl input:checked+.tgl-s{background:#ff3b30}
+.tgl input:checked+.tgl-s::before{transform:translateX(16px);background:#f0ece4}
+
+.sec{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:#555;padding:12px 16px 5px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px 16px}
+.st{background:#111;border:1px solid #1a1a1a;border-radius:6px;padding:12px;text-align:center}
+.sn{font-size:24px;font-weight:700;line-height:1}
+.sn.r{color:#ff3b30}
+.sn.g{color:#30d158}
+.sl{font-size:8px;color:#666;letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+
+.dv{height:1px;background:#1a1a1a;margin:0 16px}
+
+.row{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;gap:10px}
+.row label{color:#aaa;font-size:11px}
+.row-sub{font-size:9px;color:#555;padding:0 16px 8px;line-height:1.4}
+.ct{display:flex;border:1px solid #2a2a2a;border-radius:3px;overflow:hidden;flex-shrink:0}
+.ct button{width:28px;height:28px;background:#161616;border:none;color:#888;font-family:inherit;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ct button:hover{color:#f0ece4;background:#222}
+.ct button:active{background:#333}
+.ct span{width:62px;text-align:center;font-size:11px;font-weight:700;background:#0a0a0a;border-left:1px solid #2a2a2a;border-right:1px solid #2a2a2a;color:#f0ece4;height:28px;line-height:28px;display:block;user-select:none}
+
+.dom-list{padding:2px 16px;max-height:130px;overflow-y:auto}
+.dom-list::-webkit-scrollbar{width:3px}
+.dom-list::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:2px}
+.dm{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;background:#111;border:1px solid #1a1a1a;border-radius:5px;margin-bottom:4px}
+.dm span{color:#ccc;font-size:10px}
+.dm-x{width:18px;height:18px;background:none;border:1px solid #2a2a2a;border-radius:2px;color:#555;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1}
+.dm-x:hover{color:#ff3b30;border-color:#ff3b30}
+
+.add-r{display:flex;gap:5px;padding:3px 16px 12px}
+.add-r input{flex:1;height:28px;background:#111;border:1px solid #1a1a1a;border-radius:3px;color:#f0ece4;font-family:inherit;font-size:10px;padding:0 8px}
+.add-r input::placeholder{color:#444}
+.add-r input:focus{outline:none;border-color:#ff3b30}
+.add-r button{height:28px;padding:0 10px;background:#ff3b30;border:none;border-radius:3px;color:#f0ece4;font-family:inherit;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.add-r button:hover{background:#ff5147}
+
+.foot{padding:8px 16px 12px;text-align:center}
+.foot-t{font-size:8px;color:#333;letter-spacing:.08em}
+.rst{font-family:inherit;font-size:9px;background:none;border:1px solid #1a1a1a;border-radius:3px;color:#555;padding:5px 12px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+.rst:hover{color:#ff3b30;border-color:#ff3b30}
+
+.toast{position:fixed;bottom:10px;left:50%;transform:translateX(-50%) translateY(30px);background:#30d158;color:#000;padding:4px 14px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:0;transition:all .25s;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28"><defs><g id="c"><rect x="-32" y="-48" width="64" height="96" rx="6" ry="6" fill="white" stroke="#9B1B30" stroke-width="3.5"/><line x1="-18" y1="-34" x2="-18" y2="34" stroke="#1a1a1a" stroke-width="1.8"/><line x1="-8" y1="-34" x2="-8" y2="34" stroke="#1a1a1a" stroke-width="1.8"/><line x1="2" y1="-34" x2="2" y2="34" stroke="#1a1a1a" stroke-width="1.8"/><line x1="12" y1="-34" x2="12" y2="34" stroke="#1a1a1a" stroke-width="1.8"/><line x1="22" y1="-34" x2="22" y2="28" stroke="#1a1a1a" stroke-width="1.8"/></g></defs><path d="M256 56L406 106Q416 110 416 122L416 260Q416 340 256 456Q96 340 96 260L96 122Q96 110 106 106Z" fill="none" stroke="#9B1B30" stroke-width="22" stroke-linejoin="round"/><g transform="translate(256,260)scale(1.9)"><use href="#c" transform="rotate(-28,0,44)translate(0,-12)"/><use href="#c" transform="rotate(-14,0,44)translate(0,-12)"/><use href="#c" transform="rotate(0,0,44)translate(0,-12)"/><use href="#c" transform="rotate(14,0,44)translate(0,-12)"/><use href="#c" transform="rotate(28,0,44)translate(0,-12)"/></g></svg></div>
+  <h1>Do Your Cards</h1>
+  <label class="tgl"><input type="checkbox" id="tglOn"><span class="tgl-s"></span></label>
+</div>
+
+<div class="sec">Today's Stats</div>
+<div class="stats">
+  <div class="st"><div class="sn r" id="sBlk">0</div><div class="sl">Times Blocked</div></div>
+  <div class="st"><div class="sn g" id="sCrd">0</div><div class="sl">Cards Finished</div></div>
+</div>
+
+<div class="dv" style="margin-top:10px"></div>
+<div class="sec">Timers</div>
+<div class="row"><label>Unblock time</label><div class="ct"><button id="utM">−</button><span id="utV">5m</span><button id="utP">+</button></div></div>
+<div class="row-sub">Time you can browse before being blocked — and the reward window after completing cards.</div>
+<div class="row"><label>Forced block</label><div class="ct"><button id="fbM">−</button><span id="fbV">1m</span><button id="fbP">+</button></div></div>
+<div class="row-sub">Mandatory wait on the block screen before the "I finished my cards" button becomes clickable.</div>
+
+<div class="dv"></div>
+<div class="sec">Card Goal</div>
+<div class="row"><label>Flashcards per session</label><div class="ct"><button id="cgM">−</button><span id="cgV">20</span><button id="cgP">+</button></div></div>
+<div class="dv"></div>
+<div class="sec">Blocked Sites</div>
+<div class="dom-list" id="domList"></div>
+<div class="add-r">
+  <input id="newDom" type="text" placeholder="e.g. instagram.com">
+  <button id="addBtn">+ Add</button>
+</div>
+<div class="dv"></div>
+<div class="sec">AnkiWeb</div>
+<div class="row">
+  <label>Open AnkiWeb on block</label>
+  <label class="tgl"><input type="checkbox" id="ankiTgl"><span class="tgl-s"></span></label>
+</div>
+<div class="row-sub">When on, the block overlay shows a link to ankiweb.net so you can review cards in your browser.</div>
+<div class="dv"></div>
+<div class="foot">
+  <div class="foot-t">Resets daily at midnight</div>
+  <button class="rst" id="rstBtn">Reset Today's Stats</button>
+</div>
+
+<div class="toast" id="toast">Saved</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
